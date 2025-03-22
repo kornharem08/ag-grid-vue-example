@@ -7,10 +7,7 @@ interface ApiService {
     init(): void;
     getPurchaseOrders(): Promise<AxiosResponse<PaginatedPurchaseOrders>>;
     uploadFile(file: FormData): Promise<AxiosResponse<any>>;
-    //   getUserById(id: number): Promise<AxiosResponse<User>>;
-    //   createUser(userData: Partial<User>): Promise<AxiosResponse<User>>;
-    //   updateUser(id: number, userData: Partial<User>): Promise<AxiosResponse<User>>;
-    //   deleteUser(id: number): Promise<AxiosResponse<void>>;
+    importNetwork(): Promise<AxiosResponse<PaginatedPurchaseOrders>>;
 }
 
 export const apiService: ApiService = {
@@ -55,24 +52,8 @@ export const apiService: ApiService = {
           },
         });
       },
-
-    //   getUserById(id: number): Promise<AxiosResponse<User>> {
-    //     if (!this.axiosInstance) this.init();
-    //     return this.axiosInstance!.get(`/users/${id}`);
-    //   },
-
-    //   createUser(userData: Partial<User>): Promise<AxiosResponse<User>> {
-    //     if (!this.axiosInstance) this.init();
-    //     return this.axiosInstance!.post('/users', userData);
-    //   },
-
-    //   updateUser(id: number, userData: Partial<User>): Promise<AxiosResponse<User>> {
-    //     if (!this.axiosInstance) this.init();
-    //     return this.axiosInstance!.put(`/users/${id}`, userData);
-    //   },
-
-    //   deleteUser(id: number): Promise<AxiosResponse<void>> {
-    //     if (!this.axiosInstance) this.init();
-    //     return this.axiosInstance!.delete(`/users/${id}`);
-    //   }
+    importNetwork(): Promise<AxiosResponse<PaginatedPurchaseOrders>> {
+        if (!this.axiosInstance) this.init();
+        return this.axiosInstance!.get('/purchaseorders/import-network');
+    }
 };

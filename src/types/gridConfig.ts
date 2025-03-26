@@ -20,9 +20,9 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
   { field: 'customer', headerName: 'Customer', sortable: false, filter: false },
   { field: 'productCode', headerName: 'Product Code', sortable: false, filter: false },
   { field: 'productDescription', headerName: 'Description', sortable: false, filter: false },
-  { field: 'ordered', headerName: 'Ordered', sortable: true, filter: false },
+  { field: 'ordered', headerName: 'Ordered', sortable: false, filter: false },
   { field: 'received', headerName: 'Received', sortable: false, filter: false },
-  { field: 'remain', headerName: 'Remain', sortable: true, filter: false },
+  { field: 'remain', headerName: 'Remain', sortable: false, filter: false },
   { field: 'pr', headerName: 'PR', sortable: false, filter: false },
   { 
     field: 'prDate', 

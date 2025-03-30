@@ -5,14 +5,19 @@
       <h1 class="text-2xl font-bold">Data Grid</h1>
     </div>
 
-    <div class="ag-theme-alpine" style="height: 85vh">
+    <div class="ag-theme-alpine" style="height: 90vh">
       <ag-grid-vue style="width: 100%; height: 100%" :columnDefs="columnDefs" :rowData="rowData"
-        :defaultColDef="defaultColDef" :pagination="true" :paginationPageSize="pageSize" 
-        :suppressPaginationPanel="true"
+        :defaultColDef="defaultColDef" :pagination="false" :paginationPageSize="pageSize" 
+        :suppressPaginationPanel="false"
         @grid-ready="onGridReady"></ag-grid-vue>
     </div>
     
     <LoadingSpinner v-if="loading" message="กำลังโหลดข้อมูล..." />
+    <ErrorModal 
+      :is-open="showError" 
+      :message="errorMessage"
+      @close="closeError"
+    />
   </div>
 </template>
 
@@ -26,12 +31,12 @@ import { columnDefs, defaultColDef } from '@/types/gridConfig';
 import type { PurchaseOrder } from '@/types/purchaseOrder';
 import { snakeToCamel } from '@/utils/transform';
 import LoadingSpinner from './LoadingSpinner.vue';
-
+import ErrorModal from './ErrorModal.vue';
 
 // Extend GridApi interface to include setQuickFilter
 interface ExtendedGridApi extends GridApi {
   setQuickFilter: (filter: string) => void;
-  paginationSetPageSize: (pageSize: number) => void;
+  // paginationSetPageSize: (pageSize: number) => void;
 }
 
 const gridApi = ref<ExtendedGridApi | null>(null);
@@ -41,10 +46,22 @@ const loading = ref<boolean>(false);
 const searchText = ref<string>('');
 const selectedFile = ref<File | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
+const showError = ref<boolean>(false);
+const errorMessage = ref<string>('');
 
 const onGridReady = (params: GridReadyEvent) => {
   gridApi.value = params.api as ExtendedGridApi;
   fetchData();
+};
+
+const showErrorMessage = (message: string) => {
+  errorMessage.value = message;
+  showError.value = true;
+};
+
+const closeError = () => {
+  showError.value = false;
+  errorMessage.value = '';
 };
 
 const fetchData = async (): Promise<void> => {
@@ -68,6 +85,8 @@ const fetchData = async (): Promise<void> => {
     }
   } catch (error) {
     console.error('Error fetching data:', error);
+    showErrorMessage('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
+    rowData.value = [];
   } finally {
     loading.value = false;
   }
@@ -83,11 +102,11 @@ const refreshData = (): void => {
   fetchData();
 };
 
-const onPageSizeChanged = (): void => {
-  if (gridApi.value) {
-    gridApi.value.paginationSetPageSize(pageSize.value);
-  }
-};
+// const onPageSizeChanged = (): void => {
+//   if (gridApi.value) {
+//     gridApi.value.paginationSetPageSize(pageSize.value);
+//   }
+// };
 
 const onFileChange = (event: Event): void => {
   const input = event.target as HTMLInputElement;
@@ -124,9 +143,9 @@ const uploadFile = async (): Promise<void> => {
     // Clear the file input and refresh the grid
     selectedFile.value = null;
     if (fileInput.value) fileInput.value.value = '';
-    // fetchData(); // Refresh the grid data after upload
   } catch (error) {
     console.error('Error uploading file:', error);
+    showErrorMessage('ไม่สามารถอัพโหลดไฟล์ได้ กรุณาลองใหม่อีกครั้ง');
   } finally {
     loading.value = false;
   }

@@ -10,10 +10,13 @@ const formatDate = (params: ValueFormatterParams) => {
 };
 
 const calculateTotalUnits = (deliveryDate: string): number => {
-  const unitMatches = deliveryDate.match(/\((\d+)\s*unit\)/g);
+  // Match any number in parentheses regardless of what text follows the number
+  // For example: "(2 unit)", "(3 ชิ้น)", "(5 pieces)", "(7 items)" etc.
+  const unitMatches = deliveryDate.match(/\((\d+)[^\)]*\)/g);
   if (!unitMatches) return 0;
   
   return unitMatches.reduce((sum, match) => {
+    // Extract only the number from each match
     const unit = parseInt(match.match(/\d+/)?.[0] || '0');
     return sum + unit;
   }, 0);

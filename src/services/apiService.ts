@@ -1,13 +1,15 @@
 // src/services/apiService.ts
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import type { PaginatedPurchaseOrders, PurchaseOrder } from '@/types/purchaseOrder';
+import type {PaginatedSetting, Setting} from '@/types/setting';
 
 interface ApiService {
     axiosInstance: AxiosInstance | null;
     init(): void;
-    getPurchaseOrders(): Promise<AxiosResponse<PaginatedPurchaseOrders>>;
+    getPurchaseOrders(data: any): Promise<AxiosResponse<PaginatedPurchaseOrders>>;
     uploadFile(file: FormData): Promise<AxiosResponse<any>>;
     importNetwork(): Promise<AxiosResponse<PaginatedPurchaseOrders>>;
+    getSettings(): Promise<AxiosResponse<PaginatedSetting>>;
 }
 
 export const apiService: ApiService = {
@@ -40,9 +42,9 @@ export const apiService: ApiService = {
         );
     },
 
-    getPurchaseOrders(): Promise<AxiosResponse<PaginatedPurchaseOrders>> {
+    getPurchaseOrders(data: any): Promise<AxiosResponse<PaginatedPurchaseOrders>> {
         if (!this.axiosInstance) this.init();
-        return this.axiosInstance!.get('/purchaseorders');
+        return this.axiosInstance!.post('/purchaseorders', data);
     },
     uploadFile(file: FormData): Promise<AxiosResponse<any>> {
         if (!this.axiosInstance) this.init();
@@ -55,5 +57,9 @@ export const apiService: ApiService = {
     importNetwork(): Promise<AxiosResponse<PaginatedPurchaseOrders>> {
         if (!this.axiosInstance) this.init();
         return this.axiosInstance!.get('/purchaseorders/import-network');
+    },
+    getSettings(): Promise<AxiosResponse<PaginatedSetting>> {
+        if (!this.axiosInstance) this.init();
+        return this.axiosInstance!.get('/purchaseorders/setting');
     }
 };

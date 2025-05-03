@@ -1,36 +1,81 @@
-<!-- src/components/DataGrid.vue -->
 <template>
-  <div class="ag-grid-container">
-    <div class="mb-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Data Grid</h1>
+  <div class="ag-grid-container bg-gradient-to-br from-white via-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200">
+    <!-- Header -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center gap-6">
+      <img 
+        src="@/assets/NetOne-Logo-1.png" 
+        alt="NetONE Logo" 
+        class="ag-logo"
+      />
       <div>
-        <select 
+        <div class="text-left">
+          <h1 class="text-3xl font-extrabold text-gray-800 leading-tight tracking-tight">
+            PurchaseOrder Record Table<br />
+            <p class="text-lg text-gray-500 font-medium">Net<span class="text-red-500 font-bold">ONE</span> Network Solution</p>
+          </h1>          
+        </div>
+      </div>
+      
+      <!-- Dropdown aligned to the right -->
+      <div class="w-full md:w-auto ml-auto">
+        <label class="block text-sm font-semibold text-gray-600 mb-2">Select Setting</label>
+        <div class="relative">
+          <select 
             v-model="selectedSetting" 
             @change="handleSettingChange"
-            class="block appearance-none bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            class="w-full md:w-64 appearance-none bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-10 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
           >
-            <option v-for="setting in settings" :key="setting.path" :value="setting.path">
+            <option 
+              v-for="setting in settings" 
+              :key="setting.path" 
+              :value="setting.path"
+            >
               {{ setting.name }}
             </option>
           </select>
+          <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="ag-theme-alpine" style="height: 90vh">
-      <ag-grid-vue style="width: 100%; height: 100%" :columnDefs="columnDefs" :rowData="rowData"
-        :defaultColDef="defaultColDef" :pagination="false" :paginationPageSize="pageSize" 
+    <!-- Data Grid -->
+    <div 
+      class="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300 shadow-inner" 
+      style="height: 75vh"
+    >
+      <ag-grid-vue
+        style="width: 100%; height: 100%"
+        :columnDefs="columnDefs"
+        :rowData="rowData"
+        :defaultColDef="defaultColDef"
+        :pagination="false"
+        :paginationPageSize="pageSize"
         :suppressPaginationPanel="false"
-        @grid-ready="onGridReady"></ag-grid-vue>
+        @grid-ready="onGridReady"
+      />
     </div>
+
+    <!-- Feedback States -->
+    <LoadingSpinner 
+      v-if="loading" 
+      message="กำลังโหลดข้อมูล..." 
+    />
     
-    <LoadingSpinner v-if="loading" message="กำลังโหลดข้อมูล..." />
     <ErrorModal 
       :is-open="showError" 
       :message="errorMessage"
       @close="closeError"
     />
+    
   </div>
 </template>
+
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
@@ -287,4 +332,45 @@ onMounted(async () => {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
+
+.ag-theme-alpine {
+  --ag-background-color: white;
+  --ag-header-background-color: #f3f4f6;
+  --ag-header-foreground-color: #374151;
+  --ag-font-size: 14px;
+  --ag-font-family: 'Inter', sans-serif;
+  --ag-border-color: #e5e7eb;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 700;
+  background: linear-gradient(to right, #f8fafc, #e2e8f0);
+  border-right: 1px solid #e5e7eb;
+  color: #1f2937;
+}
+
+.ag-theme-alpine .ag-cell {
+  padding: 12px;
+  color: #374151;
+  border-right: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.ag-theme-alpine .ag-row:hover .ag-cell {
+  background-color: #f0f9ff;
+}
+
+.ag-theme-alpine .ag-row:nth-child(even) .ag-cell {
+  background-color: #f9fafb;
+}
+
+.ag-logo {
+  background-color: #f9fafb;
+  height: 10%;
+  width: 10%;
+  margin-left: 20px;
+}
+
 </style>

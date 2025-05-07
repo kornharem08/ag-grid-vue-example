@@ -2,11 +2,12 @@
   <div class="ag-grid-container bg-gradient-to-br from-white via-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200">
     <!-- Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center gap-6">
-      <img 
-        src="@/assets/NetOne-Logo-1.png" 
-        alt="NetONE Logo" 
-        class="ag-logo"
-      />
+      <a href="http://localhost:5173/" class="ag-logo">
+        <img 
+          src="@/assets/NetOne-Logo-1.png" 
+          alt="NetONE Logo" 
+        />
+      </a>
       <div>
         <div class="text-left">
           <h1 class="text-3xl font-extrabold text-gray-800 leading-tight tracking-tight">
@@ -47,7 +48,7 @@
     <!-- Data Grid -->
     <div 
       class="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300 shadow-inner" 
-      style="height: 75vh"
+      style="height: 85vh"
     >
       <ag-grid-vue
         style="width: 100%; height: 100%"

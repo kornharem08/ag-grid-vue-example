@@ -19,6 +19,7 @@ export interface PurchaseOrder {
     requestDate?: string | null;
     deliveryDate?: string | null;
     status?: string | null;
+    remark?: string | null;
   }
   
   export interface PaginatedPurchaseOrders {

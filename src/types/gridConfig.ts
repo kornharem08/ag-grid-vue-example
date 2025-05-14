@@ -4,10 +4,10 @@ import { PurchaseOrder } from './purchaseOrder';
 import { formatToThaiDate } from '@/utils/dateFormatter';
 
 // Helper function for consistent date formatting
-const formatDate = (params: ValueFormatterParams) => {
-  const value = params.value as string | null | undefined;
-  return formatToThaiDate(value);
-};
+// const formatDate = (params: ValueFormatterParams) => {
+//   const value = params.value as string | null | undefined;
+//   return formatToThaiDate(value);
+// };
 
 const calculateTotalUnits = (deliveryDate: string): number => {
   // Match any number in parentheses regardless of what text follows the number
@@ -210,7 +210,6 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     sortable: true, 
     filter: true,
     width: 120,
-    valueFormatter: formatDate,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -235,7 +234,6 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     sortable: true, 
     filter: true,
     width: 120,
-    valueFormatter: formatDate,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -276,7 +274,6 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     sortable: false, 
     filter: true,
     width: 120,
-    valueFormatter: formatDate,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -304,9 +301,22 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     sortable: false, 
     filter: true,
     width: 150,
-    valueGetter: isCompleted,
     cellStyle: statusCellStyle
   },
+  {
+    field: 'remark', 
+    headerName: 'Remark', 
+    sortable: false, 
+    filter: true,
+    width: 150,
+    wrapText: true,
+    autoHeight: true,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    },
+  }
 ];
 
 export const defaultColDef: ColDef = {

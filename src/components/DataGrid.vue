@@ -1,5 +1,22 @@
 <template>
   <div class="ag-grid-container bg-gradient-to-br from-white via-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200">
+    
+    <div class="flex gap-4 justify-end mb-4">
+      <button
+        @click="exportToCsv"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl shadow transition duration-200"
+      >
+        Export CSV
+      </button>
+
+      <button
+        @click="exportToExcel"
+        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl shadow transition duration-200"
+      >
+        Export Excel
+      </button>
+    </div>
+
     <!-- Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center gap-6">
       <a href="http://localhost:5173/" class="ag-logo">
@@ -79,6 +96,7 @@
 
 
 <script lang="ts" setup>
+import { ModuleRegistry } from 'ag-grid-community';  
 import { ref, onMounted } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3';
 import type { GridApi, GridReadyEvent } from 'ag-grid-community';
@@ -323,6 +341,24 @@ onMounted(async () => {
 //     loading.value = false;
 //   }
 // });
+const exportToCsv = (): void => {
+  if (gridApi.value) {
+    gridApi.value.exportDataAsCsv({
+      fileName: 'PurchaseOrders.csv',
+    });
+  }
+};
+
+const exportToExcel = (): void => {
+  if (gridApi.value) {
+    gridApi.value.exportDataAsExcel({})
+    // gridApi.value.exportDataAsExcel({
+    //   fileName: 'PurchaseOrders.xlsx',
+    //   sheetName: 'Orders',
+    // });
+  }
+};
+
 </script>
 
 <style scoped>

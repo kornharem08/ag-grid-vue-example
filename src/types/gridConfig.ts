@@ -1,35 +1,6 @@
 // src/types/gridConfig.ts
-import type { ColDef, ValueGetterParams, ValueFormatterParams } from 'ag-grid-community';
+import type { ColDef, ValueFormatterParams } from 'ag-grid-community';
 import { PurchaseOrder } from './purchaseOrder';
-import { formatToThaiDate } from '@/utils/dateFormatter';
-
-// Helper function for consistent date formatting
-const formatDate = (params: ValueFormatterParams) => {
-  const value = params.value as string | null | undefined;
-  return formatToThaiDate(value);
-};
-
-const calculateTotalUnits = (deliveryDate: string): number => {
-  // Match any number in parentheses regardless of what text follows the number
-  // For example: "(2 unit)", "(3 ชิ้น)", "(5 pieces)", "(7 items)" etc.
-  const unitMatches = deliveryDate.match(/\((\d+)[^\)]*\)/g);
-  if (!unitMatches) return 0;
-  
-  return unitMatches.reduce((sum, match) => {
-    // Extract only the number from each match
-    const unit = parseInt(match.match(/\d+/)?.[0] || '0');
-    return sum + unit;
-  }, 0);
-};
-
-const isCompleted = (params: ValueGetterParams) => {
-  const { deliveryDate, ordered } = params.data || {};
-  
-  if (!deliveryDate || !ordered) return 'Not Completed';
-  
-  const totalUnits = calculateTotalUnits(deliveryDate);
-  return totalUnits === ordered ? 'Completed' : 'Not Completed';
-};
 
 const formatDeliveryDate = (params: ValueFormatterParams) => {
   const value = params.value as string | null | undefined;
@@ -78,7 +49,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'type', 
     headerName: 'Type', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 100,
     cellStyle: { 
       'white-space': 'pre-line',
@@ -90,7 +61,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'salesTeam', 
     headerName: 'Sales Team', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 150,
     wrapText: true,
     autoHeight: true,
@@ -104,7 +75,21 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'projectManager', 
     headerName: 'Project Manager', 
     sortable: false, 
-    filter: false,
+    filter: true,
+    width: 150,
+    wrapText: true,
+    autoHeight: true,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    }
+  },
+  { 
+    field: 'purchasing', 
+    headerName: 'Purchasing', 
+    sortable: false, 
+    filter: true,
     width: 150,
     wrapText: true,
     autoHeight: true,
@@ -118,7 +103,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'customer', 
     headerName: 'Customer', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 200,
     wrapText: true,
     autoHeight: true,
@@ -132,7 +117,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'productCode', 
     headerName: 'Product Code', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 150,
     wrapText: true,
     autoHeight: true,
@@ -146,7 +131,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'productDescription', 
     headerName: 'Description', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 250,
     wrapText: true,
     autoHeight: true,
@@ -160,7 +145,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'ordered', 
     headerName: 'Ordered', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 90,
     type: 'numericColumn',
     cellStyle: { 
@@ -172,7 +157,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'received', 
     headerName: 'Received', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 90,
     type: 'numericColumn',
     cellStyle: { 
@@ -184,7 +169,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'remain', 
     headerName: 'Remain', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 90,
     type: 'numericColumn',
     cellStyle: { 
@@ -196,7 +181,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'pr', 
     headerName: 'PR', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 120,
     cellStyle: { 
       'white-space': 'pre-line',
@@ -208,9 +193,8 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'prDate', 
     headerName: 'PR Date', 
     sortable: true, 
-    filter: false,
+    filter: true,
     width: 120,
-    valueFormatter: formatDate,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -221,7 +205,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'po', 
     headerName: 'PO', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 120,
     cellStyle: { 
       'white-space': 'pre-line',
@@ -233,9 +217,20 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'poDate', 
     headerName: 'PO Date', 
     sortable: true, 
-    filter: false,
+    filter: true,
     width: 120,
-    valueFormatter: formatDate,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    }
+  },
+  { 
+    field: 'poReceiveDate', 
+    headerName: 'PO Receive Date', 
+    sortable: false, 
+    filter: true,
+    width: 140,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -246,7 +241,7 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'distribution', 
     headerName: 'Distribution', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 150,
     wrapText: true,
     autoHeight: true,
@@ -257,13 +252,11 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
-    field: 'paymentTerm', 
-    headerName: 'Payment Term', 
+    field: 'receivedDate', 
+    headerName: 'Received Date', 
     sortable: false, 
-    filter: false,
-    width: 150,
-    wrapText: true,
-    autoHeight: true,
+    filter: true,
+    width: 130,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -271,23 +264,10 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
-    field: 'requestDate', 
-    headerName: 'Request Date', 
+    field: 'stockPickingOutDate', 
+    headerName: 'Stock Picking Out Date', 
     sortable: false, 
-    filter: false,
-    width: 120,
-    valueFormatter: formatDate,
-    cellStyle: { 
-      'white-space': 'pre-line',
-      'line-height': '1.5',
-      'padding': '10px'
-    }
-  },
-  { 
-    field: 'deliveryDate', 
-    headerName: 'Delivery Date', 
-    sortable: false, 
-    filter: false,
+    filter: true,
     width: 150,
     wrapText: true,
     autoHeight: true,
@@ -302,11 +282,24 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     field: 'status', 
     headerName: 'Status', 
     sortable: false, 
-    filter: false,
+    filter: true,
     width: 150,
-    valueGetter: isCompleted,
     cellStyle: statusCellStyle
   },
+  {
+    field: 'remark', 
+    headerName: 'Remark', 
+    sortable: false, 
+    filter: true,
+    width: 150,
+    wrapText: true,
+    autoHeight: true,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    },
+  }
 ];
 
 export const defaultColDef: ColDef = {

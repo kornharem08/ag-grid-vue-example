@@ -4,6 +4,7 @@ export interface PurchaseOrder {
     type?: string | null;
     salesTeam?: string | null;
     projectManager?: string | null;
+    purchasing?: string | null;
     customer?: string | null;
     productCode?: string | null;
     productDescription?: string | null;
@@ -14,16 +15,19 @@ export interface PurchaseOrder {
     prDate?: string | null;
     po?: string | null;
     poDate?: string | null;
-    distribution?: string | null;
-    paymentTerm?: string | null;
     requestDate?: string | null;
+    poReceiveDate?: string | null;
+    distribution?: string | null;
+    receivedDate?: string | null;
+    stockPickingOutDate?: string | null;
     deliveryDate?: string | null;
     status?: string | null;
-  }
-  
-  export interface PaginatedPurchaseOrders {
+    remark?: string | null;
+}
+
+export interface PaginatedPurchaseOrders {
     data: PurchaseOrder[];
     page: number;
     pageSize: number;
     total: number;
-  }
+}

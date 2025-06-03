@@ -1,35 +1,6 @@
 // src/types/gridConfig.ts
-import type { ColDef, ValueGetterParams, ValueFormatterParams } from 'ag-grid-community';
+import type { ColDef, ValueFormatterParams } from 'ag-grid-community';
 import { PurchaseOrder } from './purchaseOrder';
-import { formatToThaiDate } from '@/utils/dateFormatter';
-
-// Helper function for consistent date formatting
-// const formatDate = (params: ValueFormatterParams) => {
-//   const value = params.value as string | null | undefined;
-//   return formatToThaiDate(value);
-// };
-
-const calculateTotalUnits = (deliveryDate: string): number => {
-  // Match any number in parentheses regardless of what text follows the number
-  // For example: "(2 unit)", "(3 ชิ้น)", "(5 pieces)", "(7 items)" etc.
-  const unitMatches = deliveryDate.match(/\((\d+)[^\)]*\)/g);
-  if (!unitMatches) return 0;
-  
-  return unitMatches.reduce((sum, match) => {
-    // Extract only the number from each match
-    const unit = parseInt(match.match(/\d+/)?.[0] || '0');
-    return sum + unit;
-  }, 0);
-};
-
-const isCompleted = (params: ValueGetterParams) => {
-  const { deliveryDate, ordered } = params.data || {};
-  
-  if (!deliveryDate || !ordered) return 'Not Completed';
-  
-  const totalUnits = calculateTotalUnits(deliveryDate);
-  return totalUnits === ordered ? 'Completed' : 'Not Completed';
-};
 
 const formatDeliveryDate = (params: ValueFormatterParams) => {
   const value = params.value as string | null | undefined;
@@ -103,6 +74,20 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
   { 
     field: 'projectManager', 
     headerName: 'Project Manager', 
+    sortable: false, 
+    filter: true,
+    width: 150,
+    wrapText: true,
+    autoHeight: true,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    }
+  },
+  { 
+    field: 'purchasing', 
+    headerName: 'Purchasing', 
     sortable: false, 
     filter: true,
     width: 150,
@@ -241,6 +226,18 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
+    field: 'poReceiveDate', 
+    headerName: 'PO Receive Date', 
+    sortable: false, 
+    filter: true,
+    width: 140,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    }
+  },
+  { 
     field: 'distribution', 
     headerName: 'Distribution', 
     sortable: false, 
@@ -255,13 +252,11 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
-    field: 'paymentTerm', 
-    headerName: 'Payment Term', 
+    field: 'receivedDate', 
+    headerName: 'Received Date', 
     sortable: false, 
     filter: true,
-    width: 150,
-    wrapText: true,
-    autoHeight: true,
+    width: 130,
     cellStyle: { 
       'white-space': 'pre-line',
       'line-height': '1.5',
@@ -269,20 +264,8 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
-    field: 'requestDate', 
-    headerName: 'Request Date', 
-    sortable: false, 
-    filter: true,
-    width: 120,
-    cellStyle: { 
-      'white-space': 'pre-line',
-      'line-height': '1.5',
-      'padding': '10px'
-    }
-  },
-  { 
-    field: 'deliveryDate', 
-    headerName: 'Delivery Date', 
+    field: 'stockPickingOutDate', 
+    headerName: 'Stock Picking Out Date', 
     sortable: false, 
     filter: true,
     width: 150,

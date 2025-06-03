@@ -50,7 +50,7 @@
     <!-- Data Grid -->
     <div class="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300 shadow-inner" style="height: 80vh">
       <ag-grid-vue style="width: 100%; height: 100%" :columnDefs="columnDefs" :rowData="rowData"
-        :defaultColDef="defaultColDef" :pagination="false" :paginationPageSize="pageSize"
+        :defaultColDef="defaultColDef" :pagination="true" :paginationPageSize="50"
         :suppressPaginationPanel="false" @grid-ready="onGridReady" />
     </div>
 

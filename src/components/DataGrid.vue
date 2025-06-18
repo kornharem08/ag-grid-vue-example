@@ -1,17 +1,11 @@
 <template>
-  <div class="ag-grid-container bg-gradient-to-br from-white via-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200">
+  <div
+    class="ag-grid-container bg-gradient-to-br from-white via-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200">
     <!-- Data Grid -->
     <div class="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300 shadow-inner" style="height: 80vh">
-      <ag-grid-vue 
-        style="width: 100%; height: 100%" 
-        :columnDefs="columnDefs" 
-        :rowData="displayData"
-        :defaultColDef="defaultColDef" 
-        :pagination="false" 
-        :paginationPageSize="pageSize"
-        :suppressPaginationPanel="false" 
-        @grid-ready="onGridReady" 
-      />
+      <ag-grid-vue style="width: 100%; height: 100%" :columnDefs="columnDefs" :rowData="rowData"
+        :defaultColDef="defaultColDef" :pagination="true" :paginationPageSize="50" :suppressPaginationPanel="false"
+        @grid-ready="onGridReady" />
     </div>
 
     <!-- Feedback States -->

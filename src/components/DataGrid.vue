@@ -9,7 +9,7 @@
     </div>
 
     <!-- Feedback States -->
-    <LoadingSpinner v-if="loading" message="กำลังโหลดข้อมูล..." />
+    <!-- <LoadingSpinner v-if="loading" message="กำลังโหลดข้อมูล..." /> -->
     <ErrorModal :is-open="showError" :message="errorMessage" @close="closeError" />
   </div>
 </template>

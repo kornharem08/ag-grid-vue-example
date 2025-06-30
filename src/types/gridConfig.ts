@@ -226,6 +226,18 @@ export const columnDefs: ColDef<PurchaseOrder>[] = [
     }
   },
   { 
+    field: 'requestDate', 
+    headerName: 'Request Date', 
+    sortable: true, 
+    filter: true,
+    width: 140,
+    cellStyle: { 
+      'white-space': 'pre-line',
+      'line-height': '1.5',
+      'padding': '10px'
+    }
+  },
+  { 
     field: 'poReceiveDate', 
     headerName: 'PO Receive Date', 
     sortable: false, 
